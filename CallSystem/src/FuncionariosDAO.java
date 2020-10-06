@@ -48,6 +48,7 @@ public class FuncionariosDAO {
                 tmpFuncionarios.setSobrenome(rsFuncionarios.getString("LastName"));
                 tmpFuncionarios.setNome(rsFuncionarios.getString("FirstName"));
                 tmpFuncionarios.setCargo(rsFuncionarios.getString("Title"));
+                tmpFuncionarios.setTratamento(rsFuncionarios.getString("TitleOfCourtesy"));
                 tmpFuncionarios.setDataNasc(rsFuncionarios.getString("BirthDate"));
                 tmpFuncionarios.setDataCon(rsFuncionarios.getString("HireDate"));
                 tmpFuncionarios.setEndereco(rsFuncionarios.getString("Address"));
@@ -58,6 +59,8 @@ public class FuncionariosDAO {
                 tmpFuncionarios.setTelefone(rsFuncionarios.getString("HomePhone"));
                 tmpFuncionarios.setExtensao(rsFuncionarios.getString("Extension"));
                 tmpFuncionarios.setObservacao(rsFuncionarios.getString("Notes"));
+                tmpFuncionarios.setSubordinado(rsFuncionarios.getString("ReportsTo"));
+                tmpFuncionarios.setSalario(rsFuncionarios.getFloat("Salary"));
 
                 //adicionando
                 lstFuncionarios.add(tmpFuncionarios);
@@ -98,6 +101,7 @@ public class FuncionariosDAO {
                 tmpFuncionarios.setSobrenome(rsFuncionarios.getString("LastName"));
                 tmpFuncionarios.setNome(rsFuncionarios.getString("FirstName"));
                 tmpFuncionarios.setCargo(rsFuncionarios.getString("Title"));
+                tmpFuncionarios.setTratamento(rsFuncionarios.getString("TitleOfCourtesy"));
                 tmpFuncionarios.setDataNasc(rsFuncionarios.getString("BirthDate"));
                 tmpFuncionarios.setDataCon(rsFuncionarios.getString("HireDate"));
                 tmpFuncionarios.setEndereco(rsFuncionarios.getString("Address"));
@@ -108,6 +112,8 @@ public class FuncionariosDAO {
                 tmpFuncionarios.setTelefone(rsFuncionarios.getString("HomePhone"));
                 tmpFuncionarios.setExtensao(rsFuncionarios.getString("Extension"));
                 tmpFuncionarios.setObservacao(rsFuncionarios.getString("Notes"));
+                tmpFuncionarios.setSubordinado(rsFuncionarios.getString("ReportsTo"));
+                tmpFuncionarios.setSalario(rsFuncionarios.getFloat("Salary"));
             }
 
         } catch (Exception erro) {
@@ -138,13 +144,13 @@ public class FuncionariosDAO {
             String sqlCadFun;
             
             sqlCadFun = "INSERT INTO `northwind`.`employees` (`EmployeeID`, `LastName`, `FirstName`, `Title`, `TitleOfCourtesy`, `BirthDate`, `HireDate`, `Address`, `City`, `Region`, `PostalCode`, `Country`, "
-                    + "`HomePhone`, `Extension`, `Notes`, `ReportsTo`, "
+                    + "`HomePhone`, `Extension`,`Photo`, `Notes`, `ReportsTo`, "
                     + "`PhotoPath`, `Salary`) VALUES ";
             sqlCadFun += "'" + tmpFuncionarios.getId() + "',";
             sqlCadFun += "'" + tmpFuncionarios.getSobrenome()+ "',";
             sqlCadFun += "'" + tmpFuncionarios.getNome()+ "',";
             sqlCadFun += "'" + tmpFuncionarios.getCargo()+ "',";
-            sqlCadFun += "'" + "''" + "',";
+            sqlCadFun += "'" + tmpFuncionarios.getTratamento() + "',";
             sqlCadFun += "'" + tmpFuncionarios.getDataNasc()+ "',";
             sqlCadFun += "'" + tmpFuncionarios.getDataCon()+ "',";
             sqlCadFun += "'" + tmpFuncionarios.getEndereco()+ "',";
@@ -154,10 +160,11 @@ public class FuncionariosDAO {
             sqlCadFun += "'" + tmpFuncionarios.getPais()+ "',";
             sqlCadFun += "'" + tmpFuncionarios.getTelefone()+ "',";
             sqlCadFun += "'" + tmpFuncionarios.getExtensao()+ "',";
+            sqlCadFun += "'" + "''" + "',";
             sqlCadFun += "'" + tmpFuncionarios.getObservacao()+ "',";
+            sqlCadFun += "'" + tmpFuncionarios.getSubordinado() + "',";
             sqlCadFun += "'" + "''" + "',";
-            sqlCadFun += "'" + "''" + "',";
-            sqlCadFun += "'" + "''" + "')";
+            sqlCadFun += "'" + tmpFuncionarios.getSalario() + "')";
             
             
             stFuncionarios = ConexaoDAO.connSistema.createStatement();

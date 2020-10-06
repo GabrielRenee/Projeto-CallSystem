@@ -1,25 +1,23 @@
 
-import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 import javax.swing.filechooser.*;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.event.*;
 import java.awt.*;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class FuncionariosView extends JInternalFrame implements ActionListener {
 
     public static Container ctnFuncionarios;
 
-    public static String strCampos[] = {"Id:", "Sobrenome:", "Nome", "Cargo:",
-        "Endereço:", "Cidade:", "Estado:", "CEP:", "Pais:", "Telefone:", "Extensão:"};
-
-    public static JLabel lblCampos[];
+    public static String strCampos[] = {"Id:", "Sobrenome:", "Nome", "Cargo:", "Tratamento:", "Subordinado ao:",
+        "Endereço:", "Cidade:", "Estado:", "CEP:", "Pais:", "Telefone:", "Extensão:", "Salario"};
+    public static JTextArea txtAObs;
+    public static JLabel lblCampos[], lblTxtA;
     public static JTextField txtCampos[];
 
     public static ImageIcon icnNovo, icnEditar,
@@ -49,8 +47,6 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
     public static int statusFoto;
     public static int statusAtual = 0, acao;
     public static boolean status;
-    public static SimpleDateFormat f1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-    public static SimpleDateFormat f2 = new SimpleDateFormat("dd/MM/yyyy");
 
     public static java.util.List<FuncionariosVO> lstFuncionarios = new ArrayList<FuncionariosVO>();
 
@@ -87,27 +83,34 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
             ctnFuncionarios.add(txtCampos[i]);
 
         }//fechando for
-
+        
+        
         lblCampos1 = new JLabel("Data de nascimento");
-        lblCampos1.setBounds(30, 30 + (11 * 30), 150, 20);
+        lblCampos1.setBounds(30, 30 + (14 * 30), 150, 20);
         ctnFuncionarios.add(lblCampos1);
-
         calDataNasc = new JDateChooser();
-        calDataNasc.setBounds(160, 360, 240, 20);
-        ctnFuncionarios.add(calDataNasc);
-
+        calDataNasc.setBounds(160, 30 + (14 * 30), 240, 20);
+        ctnFuncionarios.add(calDataNasc); 
+       
         lblCampos2 = new JLabel("Data de contratação");
-        lblCampos2.setBounds(30, 30 + (12 * 30), 150, 20);
+        lblCampos2.setBounds(30, 30 + (15 * 30), 150, 20);
         ctnFuncionarios.add(lblCampos2);
-
         calDataCon = new JDateChooser();
-        calDataCon.setBounds(160, 390, 240, 20);
+        calDataCon.setBounds(160, 30 + (15 * 30), 240, 20);
         ctnFuncionarios.add(calDataCon);
-
+       
+        lblTxtA = new JLabel("Observações:");
+        lblTxtA.setBounds(30, 30 + (16 * 30), 150, 20);
+        ctnFuncionarios.add(lblTxtA);
+        txtAObs = new JTextArea();
+        txtAObs.setBounds(160, 30 + (16 * 30), 240, 50);
+        txtAObs.setLineWrap(true);
+        ctnFuncionarios.add(txtAObs);
+        
         btnEditar = new JButton("Editar Dados");
         btnEditar.setEnabled(false);
         btnEditar.addActionListener(this);
-        btnEditar.setBounds(250, 450, 150, 30);
+        btnEditar.setBounds(250, 575, 150, 30);
         ctnFuncionarios.add(btnEditar);
 
         imgFoto = new ImageIcon("img/user.png");
@@ -161,7 +164,7 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
 
             }
         });
-        btnNovo = new JButton("Novo Cliente", icnNovo);
+        btnNovo = new JButton("Novo Funcionario", icnNovo);
         btnNovo.addActionListener(this);
         btnNovo.setBounds(430, 265, 150, 30);
         ctnFuncionarios.add(btnNovo);
@@ -202,7 +205,7 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
 
         this.setIconifiable(true);
         this.setClosable(true);
-        this.setSize(1400, 550);
+        this.setSize(1400, 650);
         this.show();
     }
 
@@ -225,28 +228,31 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
 
                 if (status) {
                     FuncionariosVO tmpFuncionarios = new FuncionariosVO();
-
+                    SimpleDateFormat f1 = new SimpleDateFormat("dd/MM/yyyy");
+                    SimpleDateFormat f2 = new SimpleDateFormat("yyyy-MM-dd");
                     txtCampos[0].setText(tmpFuncionarios.getId());
                     txtCampos[1].setText(tmpFuncionarios.getSobrenome());
                     txtCampos[2].setText(tmpFuncionarios.getNome());
                     txtCampos[3].setText(tmpFuncionarios.getCargo());
-                    txtCampos[4].setText(tmpFuncionarios.getEndereco());
-                    txtCampos[5].setText(tmpFuncionarios.getCidade());
-                    txtCampos[6].setText(tmpFuncionarios.getEstado());
-                    txtCampos[7].setText(tmpFuncionarios.getCep());
-                    txtCampos[8].setText(tmpFuncionarios.getPais());
-                    txtCampos[9].setText(tmpFuncionarios.getTelefone());
-                    txtCampos[10].setText(tmpFuncionarios.getExtensao());
-                    txtCampos[11].setText(tmpFuncionarios.getObservacao());
+                    txtCampos[4].setText(tmpFuncionarios.getTratamento());
+                    txtCampos[5].setText(tmpFuncionarios.getSubordinado());
+                    txtCampos[6].setText(tmpFuncionarios.getEndereco());
+                    txtCampos[7].setText(tmpFuncionarios.getCidade());
+                    txtCampos[8].setText(tmpFuncionarios.getEstado());
+                    txtCampos[9].setText(tmpFuncionarios.getCep());
+                    txtCampos[10].setText(tmpFuncionarios.getPais());
+                    txtCampos[11].setText(tmpFuncionarios.getTelefone());
+                    txtCampos[12].setText(tmpFuncionarios.getExtensao());
+                    txtCampos[13].setText(Float.toString(tmpFuncionarios.getSalario()));
                     try {
-                        calDataNasc.setDate(f2.parse(f1.format(tmpFuncionarios.getDataNasc())));
-                    } catch (ParseException ex) {
-                        Logger.getLogger(FuncionariosView.class.getName()).log(Level.SEVERE, null, ex);
+                        calDataNasc.getDateEditor().setDate(f2.parse(tmpFuncionarios.getDataNasc()));
+                    } catch (ParseException erro) {
+                        JOptionPane.showMessageDialog(null, erro.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);;
                     }
                     try {
-                        calDataCon.setDate(f2.parse(f1.format(tmpFuncionarios.getDataCon())));
-                    } catch (ParseException ex) {
-                        Logger.getLogger(FuncionariosView.class.getName()).log(Level.SEVERE, null, ex);
+                        calDataCon.getDateEditor().setDate(f2.parse(tmpFuncionarios.getDataNasc()));
+                    } catch (ParseException erro) {
+                        JOptionPane.showMessageDialog(null, erro.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);;
                     }
 
                     try {
@@ -254,6 +260,7 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
                     } catch (Exception erro) {
                         JOptionPane.showMessageDialog(null, erro.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
                     }
+                    txtAObs.setText(tmpFuncionarios.getObservacao());
 
                     carregarFuncionarios(1, "");
 
@@ -293,6 +300,7 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
         for (int i = 0; i < txtCampos.length; i++) {
             txtCampos[i].setEditable(tmpStatus);
         }
+        txtAObs.setEditable(tmpStatus);
         calDataCon.setEnabled(tmpStatus);
         calDataNasc.setEnabled(tmpStatus);
         btnFoto.setEnabled(tmpStatus);
@@ -350,11 +358,14 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
     public static void carregarCampos(FuncionariosVO tmpFuncionarios) {
 
         try {
-
+            SimpleDateFormat f1 = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat f2 = new SimpleDateFormat("yyyy-MM-dd");
             txtCampos[0].setText(tmpFuncionarios.getId());
             txtCampos[1].setText(tmpFuncionarios.getSobrenome());
             txtCampos[2].setText(tmpFuncionarios.getNome());
             txtCampos[3].setText(tmpFuncionarios.getCargo());
+            txtCampos[4].setText(tmpFuncionarios.getTratamento());
+            txtCampos[5].setText(tmpFuncionarios.getSubordinado());
             txtCampos[6].setText(tmpFuncionarios.getEndereco());
             txtCampos[7].setText(tmpFuncionarios.getCidade());
             txtCampos[8].setText(tmpFuncionarios.getEstado());
@@ -362,18 +373,10 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
             txtCampos[10].setText(tmpFuncionarios.getPais());
             txtCampos[11].setText(tmpFuncionarios.getTelefone());
             txtCampos[12].setText(tmpFuncionarios.getExtensao());
-            txtCampos[13].setText(tmpFuncionarios.getObservacao());
-            try {
-                calDataNasc.setDate(f1.parse(f2.format(tmpFuncionarios.getDataNasc())));
-            } catch (ParseException ex) {
-                Logger.getLogger(FuncionariosView.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            try {
-                calDataCon.setDate(f2.parse(f1.format(tmpFuncionarios.getDataCon())));
-            } catch (ParseException ex) {
-                Logger.getLogger(FuncionariosView.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
+            txtCampos[13].setText(Float.toString(tmpFuncionarios.getSalario()));
+            calDataNasc.getDateEditor().setDate(f2.parse(tmpFuncionarios.getDataNasc()));
+            calDataCon.getDateEditor().setDate(f2.parse(tmpFuncionarios.getDataCon()));
+            txtAObs.setText(tmpFuncionarios.getObservacao());
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, erro.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
         }

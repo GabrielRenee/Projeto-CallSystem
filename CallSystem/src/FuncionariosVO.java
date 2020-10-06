@@ -1,11 +1,13 @@
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 public class FuncionariosVO {
 
-    private String id, sobrenome, nome, cargo, endereco,
-            cidade, estado, cep, pais, telefone, extensao, observacao,dataCon, dataNasc;
+    private String id, sobrenome, nome, cargo, tratamento, subordinado,endereco,
+            cidade, estado, cep, pais, telefone, extensao, observacao, dataCon, dataNasc;
+    private float salario;
     
     
     public FuncionariosVO(){
@@ -13,6 +15,7 @@ public class FuncionariosVO {
         this.setSobrenome(null);
         this.setNome(null);
         this.setCargo(null);
+        this.setTratamento(null);
         this.setDataNasc(null);
         this.setDataCon(null);
         this.setEndereco(null);
@@ -23,16 +26,19 @@ public class FuncionariosVO {
         this.setTelefone(null);
         this.setExtensao(null);
         this.setObservacao(null);
+        this.setSubordinado(null);
+        this.setSalario(0);
     }
 
     public FuncionariosVO(String tmpId, String tmpSobrenome, String tmpNome, String tmpCargo,
-            String tmpDataNasc, String tmpDataCon, String tmpEndereco, String tmpCidade, String tmpEstado,
-            String tmpCep, String tmpPais, String tmpTelefone, String tmpExtensao, String tmpObservacao){
+            String tmpTratamento,String tmpDataNasc, String tmpDataCon, String tmpEndereco, String tmpCidade, String tmpEstado,
+            String tmpCep, String tmpPais, String tmpTelefone, String tmpExtensao, String tmpObservacao, String tmpSubordinado, float tmpSalario){
        
         this.setId(tmpId);
         this.setSobrenome(tmpSobrenome);
         this.setNome(tmpNome);
         this.setCargo(tmpCargo);
+        this.setTratamento(tmpTratamento);
         this.setDataNasc(tmpDataNasc);
         this.setDataCon(tmpDataCon);
         this.setEndereco(tmpEndereco);
@@ -43,6 +49,8 @@ public class FuncionariosVO {
         this.setTelefone(tmpTelefone);
         this.setExtensao(tmpExtensao);
         this.setObservacao(tmpObservacao);
+        this.setSubordinado(tmpSubordinado);
+        this.setSalario(tmpSalario);
     }
 
     public String getId() {
@@ -76,6 +84,31 @@ public class FuncionariosVO {
     public void setCargo(String tmpCargo) {
         this.cargo = tmpCargo;
     }
+
+    public String getTratamento() {
+        return this.tratamento;
+    }
+
+    public void setTratamento(String tmpTratamento) {
+        this.tratamento = tmpTratamento;
+    }
+
+    public String getSubordinado() {
+        return this.subordinado;
+    }
+
+    public void setSubordinado(String tmpSubordinado) {
+        this.subordinado = tmpSubordinado;
+    }
+
+    public float getSalario() {
+        return this.salario;
+    }
+
+    public void setSalario(float salario) {
+        this.salario = salario;
+    }
+    
 
     public String getDataNasc() {
         return this.dataNasc;
@@ -156,4 +189,6 @@ public class FuncionariosVO {
     public void setObservacao(String tmpObservacao) {
         this.observacao = tmpObservacao;
     }
+
+    
 }
