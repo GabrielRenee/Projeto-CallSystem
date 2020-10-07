@@ -1,4 +1,3 @@
-
 import com.toedter.calendar.JDateChooser;
 import javax.swing.filechooser.*;
 import javax.swing.*;
@@ -36,13 +35,14 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
     public static JDateChooser calDataNasc, calDataCon;
     public static JLabel lblCampos1, lblCampos2;
 
-    public static JLabel lblBusca;
-    public static JTextField txtBusca;
+    public static JLabel lblBusca, lblTotal;
+    public static JTextField txtBusca, txtTotal;
     public static JButton btnBusca;
 
     public static JButton btnNovo, btnSalvar, btnDesativar, btnFoto, btnEditar;
     public static ImageIcon icnPais, icnUsuario, icnRestaurar, icnBloquear;
     public static JButton btnCidade, btnNome, btnRestaurar;
+    public static float total;
 
     public static String strCaminhoOrigem, strCaminhoDestino, strNomeArquivoOrigem, extensao;
     public static int statusFoto;
@@ -139,24 +139,33 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
         }
         scrFuncionariosVenda.setBounds(600, 265, 550, 245);
         ctnFuncionarios.add(scrFuncionariosVenda);
-
+        
         
         carregarFuncionarios(1, "");
-
+        
         tblFuncionarios.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
 
                 String idFuncionarios = tblFuncionarios.getValueAt(tblFuncionarios.getSelectedRow(), 0).toString();
-
+                
                 try {
-                    carregarCampos(FuncionariosDAO.consultarFuncionarios(idFuncionarios));
+                    carregarCampos(FuncionariosDAO.consultarFuncionarios(idFuncionarios));         
                 } catch (Exception erro) {
                     JOptionPane.showMessageDialog(null, erro.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
                 }
+                total = 0;
                 desbloquearCampos(false);
             }
         });
 
+        lblTotal = new JLabel("Total Vendas:");
+        lblTotal.setBounds(960, 520, 100, 20);
+        ctnFuncionarios.add(lblTotal);
+        
+        txtTotal = new JTextField();
+        txtTotal.setBounds(1050, 520, 100, 20);
+        ctnFuncionarios.add(txtTotal);
+        
         lblBusca = new JLabel("Busca Rápida:");
         lblBusca.setBounds(600, 30, 100, 20);
         ctnFuncionarios.add(lblBusca);
@@ -164,6 +173,8 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
         txtBusca = new JTextField();
         txtBusca.setBounds(690, 30, 450, 20);
         ctnFuncionarios.add(txtBusca);
+        
+        
         txtBusca.addKeyListener(new KeyAdapter() {
             public void keyReleased(KeyEvent evt) {
 
@@ -401,15 +412,15 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
         }
     }
 
-    public static void carregarVendas(int tmpTipo, String tmpBusca){
+    public static void carregarVendas(int tmpTipo){
         
         while (mdlFuncionariosVenda.getRowCount() > 0) {
             mdlFuncionariosVenda.removeRow(0);
         }
 
         try {
-            lstVendas = FuncionariosDAO.listarVendas(tmpTipo, tmpBusca);
-
+            lstVendas = FuncionariosDAO.listarVendas(tmpTipo);
+            
             for (FuncionariosVO tmpVendas : lstVendas) {
                 String dados[] = new String[4];
 
@@ -417,9 +428,11 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
                 dados[1] = tmpVendas.getEmpresa();
                 dados[2] = tmpVendas.getVendaID();
                 dados[3] = Float.toString(tmpVendas.getPreco());
-
+                total += tmpVendas.getPreco();
                 mdlFuncionariosVenda.addRow(dados);
             }
+            
+            
 
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, erro.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
@@ -448,7 +461,8 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
             txtAObs.setText(tmpFuncionarios.getObservacao());
             calDataNasc.getDateEditor().setDate((tmpFuncionarios.getDataNasc()));
             calDataCon.getDateEditor().setDate((tmpFuncionarios.getDataCon()));
-
+            carregarVendas(Integer.parseInt(tmpFuncionarios.getId()));
+            txtTotal.setText(Float.toString(total));
             btnEditar.setEnabled(true);
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, erro.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
