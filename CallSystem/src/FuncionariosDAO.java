@@ -4,8 +4,8 @@ import java.util.*;
 
 public class FuncionariosDAO {
 
-    public static Statement stFuncionarios;
-    public static ResultSet rsFuncionarios;
+    public static Statement stFuncionarios, stVendas;
+    public static ResultSet rsFuncionarios, rsVendas;
     public static String msgErro;
 
     public static List<FuncionariosVO> listarFuncionarios(int tmpTipo, String tmpBusca) throws Exception {
@@ -81,6 +81,72 @@ public class FuncionariosDAO {
 
         return lstFuncionarios;
     }
+    
+    
+    
+    
+    
+    
+    public static List<FuncionariosVO> listarVendas(int tmpTipo, String tmpBusca) throws Exception {
+
+        List<FuncionariosVO> lstVendas = new ArrayList<FuncionariosVO>();
+
+        try {
+            ConexaoDAO.abreConexao();
+        } catch (Exception erro) {
+            throw new Exception(erro.getMessage());
+        }
+
+        try {
+
+            String sqlVendas = "";
+
+            if (tmpTipo == 1) //todos
+            {
+                sqlVendas = "SELECT * FROM employees order by CustumerID";
+            } else if (tmpTipo == 2) //iniciais
+            {
+                sqlVendas = "SELECT * FROM employees where FirstName like '" + tmpBusca + "%' order by CustumerID";
+            } else if (tmpTipo == 3) //nome
+            {
+                sqlVendas = "SELECT * FROM employees where FirstName like '%" + tmpBusca + "%' order by CustumerID";
+            } else if (tmpTipo == 4) //cidade
+            {
+                sqlVendas = "SELECT * FROM employees where city like '%" + tmpBusca + "%' order by CustumerID";
+            }
+
+            stVendas = ConexaoDAO.connSistema.createStatement();
+            rsVendas = stVendas.executeQuery(sqlVendas);
+
+            while (rsVendas.next()) { //enquanto houver clientes no result
+
+                FuncionariosVO tmpVendas = new FuncionariosVO();//instanciando
+
+                //preenchendo
+                tmpVendas.setClienteID(rsFuncionarios.getString("CustomerID"));
+                tmpVendas.setEmpresa(rsFuncionarios.getString("CompanyName"));
+                tmpVendas.setVendaID(rsFuncionarios.getString("OrderID"));
+                tmpVendas.setPreco(rsFuncionarios.getFloat("UnityPrice"));
+
+                //adicionando
+                lstVendas.add(tmpVendas);
+            }
+        } catch (Exception erro) {
+            msgErro = "Falha no processo de listagem dos dados do módulo Vendas.\n";
+            msgErro += "Verifique a sintaxe da instrução SQL, nome de campos e tabelas.\n\n";
+            msgErro += "Erro Original: " + erro.getMessage();
+
+            throw new Exception(msgErro);
+        }
+        
+        try {
+            ConexaoDAO.fechaConexao();
+        } catch (Exception erro) {
+            throw new Exception(erro.getMessage());
+        }
+
+        return lstVendas;
+    } 
     
     public static FuncionariosVO consultarFuncionarios(String tmpId) throws Exception {
         FuncionariosVO tmpFuncionarios = new FuncionariosVO();

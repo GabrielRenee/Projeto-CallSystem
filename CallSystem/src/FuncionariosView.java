@@ -25,10 +25,11 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
             icnBuscar, icnExcluir,
             icnImprimir, icnFechar;
 
-    public static String strTopo[] = {"ID", "Nome", "Cidade", "Telefone"};
-    public static JScrollPane scrFuncionarios;
-    public static JTable tblFuncionarios;
-    public static DefaultTableModel mdlFuncionarios;
+    public static String strTopo[] = {"ID", "Nome", "Cidade", "Telefone"}, strTopoVenda[] = {"ClienteID", "Empresa", "VendaID","Preço"};  
+    public static JScrollPane scrFuncionarios, scrFuncionariosVenda;;
+    public static JTable tblFuncionarios, tblFuncionariosVenda;;   
+    public static DefaultTableModel mdlFuncionarios, mdlFuncionariosVenda;
+
 
     public static ImageIcon imgFoto;
     public static JLabel lblFoto;
@@ -49,6 +50,7 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
     public static boolean status;
 
     public static java.util.List<FuncionariosVO> lstFuncionarios = new ArrayList<FuncionariosVO>();
+    public static java.util.List<FuncionariosVO> lstVendas = new ArrayList<FuncionariosVO>();
 
     public FuncionariosView() {
         super("Gerenciamento de Funcionários");
@@ -121,12 +123,24 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
         btnFoto.setBounds(420, 215, 160, 20);
         btnFoto.addActionListener(this);
         ctnFuncionarios.add(btnFoto);
+
         for (int i = 0; i < strTopo.length; i++) {
             mdlFuncionarios.addColumn(strTopo[i]);
         }
-        scrFuncionarios.setBounds(600, 105, 550, 290);
+        scrFuncionarios.setBounds(600, 55, 550, 200);
         ctnFuncionarios.add(scrFuncionarios);
+        
+        tblFuncionariosVenda = new JTable();
+        scrFuncionariosVenda = new JScrollPane(tblFuncionariosVenda);
+        mdlFuncionariosVenda = (DefaultTableModel) tblFuncionariosVenda.getModel();
+        
+        for (int i = 0; i < strTopoVenda.length; i++) {
+            mdlFuncionariosVenda.addColumn(strTopoVenda[i]);
+        }
+        scrFuncionariosVenda.setBounds(600, 265, 550, 245);
+        ctnFuncionarios.add(scrFuncionariosVenda);
 
+        
         carregarFuncionarios(1, "");
 
         tblFuncionarios.addMouseListener(new MouseAdapter() {
@@ -144,11 +158,11 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
         });
 
         lblBusca = new JLabel("Busca Rápida:");
-        lblBusca.setBounds(600, 75, 100, 20);
+        lblBusca.setBounds(600, 30, 100, 20);
         ctnFuncionarios.add(lblBusca);
 
         txtBusca = new JTextField();
-        txtBusca.setBounds(690, 75, 450, 20);
+        txtBusca.setBounds(690, 30, 450, 20);
         ctnFuncionarios.add(txtBusca);
         txtBusca.addKeyListener(new KeyAdapter() {
             public void keyReleased(KeyEvent evt) {
@@ -187,19 +201,22 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
 
         btnCidade = new JButton("por Cidade", icnPais);
         btnCidade.addActionListener(this);
-        btnCidade.setBounds(1170, 105, 150, 30);
+        btnCidade.setBounds(1170, 90, 150, 30);
         ctnFuncionarios.add(btnCidade);
 
         btnNome = new JButton("por Nome", icnUsuario);
         btnNome.addActionListener(this);
-        btnNome.setBounds(1170, 155, 150, 30);
+        btnNome.setBounds(1170, 140, 150, 30);
         ctnFuncionarios.add(btnNome);
 
         btnRestaurar = new JButton("Restaurar", icnRestaurar);
         btnRestaurar.addActionListener(this);
-        btnRestaurar.setBounds(1170, 205, 150, 30);
+        btnRestaurar.setBounds(1170, 190, 150, 30);
         ctnFuncionarios.add(btnRestaurar);
 
+        
+        
+        
         desbloquearCampos(false);
 
         this.setIconifiable(true);
@@ -384,6 +401,32 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
         }
     }
 
+    public static void carregarVendas(int tmpTipo, String tmpBusca){
+        
+        while (mdlFuncionariosVenda.getRowCount() > 0) {
+            mdlFuncionariosVenda.removeRow(0);
+        }
+
+        try {
+            lstVendas = FuncionariosDAO.listarVendas(tmpTipo, tmpBusca);
+
+            for (FuncionariosVO tmpVendas : lstVendas) {
+                String dados[] = new String[4];
+
+                dados[0] = tmpVendas.getClienteID();
+                dados[1] = tmpVendas.getEmpresa();
+                dados[2] = tmpVendas.getVendaID();
+                dados[3] = Float.toString(tmpVendas.getPreco());
+
+                mdlFuncionariosVenda.addRow(dados);
+            }
+
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(null, erro.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+        
+    
     public static void carregarCampos(FuncionariosVO tmpFuncionarios) {
 
         try {

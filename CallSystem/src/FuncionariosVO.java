@@ -6,9 +6,9 @@ import java.util.*;
 public class FuncionariosVO {
 
     private String id, sobrenome, nome, cargo, tratamento, subordinado,endereco,
-            cidade, estado, cep, pais, telefone, extensao, observacao; 
+            cidade, estado, cep, pais, telefone, extensao, observacao,clienteID,empresa,vendaID; 
     private Date dataCon, dataNasc;
-    private float salario;
+    private float salario,preco;
     
     
     public FuncionariosVO(){
@@ -29,11 +29,16 @@ public class FuncionariosVO {
         this.setObservacao(null);
         this.setSubordinado(null);
         this.setSalario(0);
+        this.setClienteID(null);
+        this.setEmpresa(null);
+        this.setVendaID(null);
+        this.setPreco(0);
     }
-
+    
     public FuncionariosVO(String tmpId, String tmpSobrenome, String tmpNome, String tmpCargo,
             String tmpTratamento,Date tmpDataNasc, Date tmpDataCon, String tmpEndereco, String tmpCidade, String tmpEstado,
-            String tmpCep, String tmpPais, String tmpTelefone, String tmpExtensao, String tmpObservacao, String tmpSubordinado, float tmpSalario){
+            String tmpCep, String tmpPais, String tmpTelefone, String tmpExtensao, String tmpObservacao, String tmpSubordinado, float tmpSalario,
+            String tmpClienteID, String tmpEmpresa, String tmpVendaID, float tmpPreco){
        
         this.setId(tmpId);
         this.setSobrenome(tmpSobrenome);
@@ -51,7 +56,10 @@ public class FuncionariosVO {
         this.setExtensao(tmpExtensao);
         this.setObservacao(tmpObservacao);
         this.setSubordinado(tmpSubordinado);
-        this.setSalario(tmpSalario);
+        this.setClienteID(tmpClienteID);
+        this.setEmpresa(tmpEmpresa);
+        this.setVendaID(tmpVendaID);
+        this.setPreco(tmpPreco);
     }
 
     public String getId() {
@@ -191,5 +199,36 @@ public class FuncionariosVO {
         this.observacao = tmpObservacao;
     }
 
+    public String getClienteID(){
+        return this.clienteID;
+    }
+    
+    public void setClienteID(String tmpClienteID){
+        this.clienteID = tmpClienteID;
+    }
+    
+    public String getEmpresa(){
+        return this.empresa;
+    }
+    
+    public void setEmpresa(String tmpEmpresa){
+        this.empresa = tmpEmpresa;
+    }
+    
+    public String getVendaID(){
+        return this.vendaID;
+    }
+    
+    public void setVendaID(String tmpVendaID){
+        this.vendaID = tmpVendaID;
+    }
+    
+    public float getPreco(){
+        return this.preco;
+    }
+    
+    public void setPreco(float tmpPreco){
+        this.preco = tmpPreco;
+    }
     
 }
