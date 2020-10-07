@@ -6,7 +6,8 @@ import java.util.*;
 public class FuncionariosVO {
 
     private String id, sobrenome, nome, cargo, tratamento, subordinado,endereco,
-            cidade, estado, cep, pais, telefone, extensao, observacao, dataCon, dataNasc;
+            cidade, estado, cep, pais, telefone, extensao, observacao; 
+    private Date dataCon, dataNasc;
     private float salario;
     
     
@@ -31,7 +32,7 @@ public class FuncionariosVO {
     }
 
     public FuncionariosVO(String tmpId, String tmpSobrenome, String tmpNome, String tmpCargo,
-            String tmpTratamento,String tmpDataNasc, String tmpDataCon, String tmpEndereco, String tmpCidade, String tmpEstado,
+            String tmpTratamento,Date tmpDataNasc, Date tmpDataCon, String tmpEndereco, String tmpCidade, String tmpEstado,
             String tmpCep, String tmpPais, String tmpTelefone, String tmpExtensao, String tmpObservacao, String tmpSubordinado, float tmpSalario){
        
         this.setId(tmpId);
@@ -110,19 +111,19 @@ public class FuncionariosVO {
     }
     
 
-    public String getDataNasc() {
+    public Date getDataNasc() {
         return this.dataNasc;
     }
 
-    public void setDataNasc(String tmpDataNasc){
+    public void setDataNasc(Date tmpDataNasc){
         this.dataNasc = tmpDataNasc;
     }
 
-    public String getDataCon(){
+    public Date getDataCon(){
         return this.dataCon;
     }
 
-    public void setDataCon(String tmpDataCon){
+    public void setDataCon(Date tmpDataCon){
         this.dataCon = tmpDataCon;
     }
 

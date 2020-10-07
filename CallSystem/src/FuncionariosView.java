@@ -83,22 +83,21 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
             ctnFuncionarios.add(txtCampos[i]);
 
         }//fechando for
-        
-        
+
         lblCampos1 = new JLabel("Data de nascimento");
         lblCampos1.setBounds(30, 30 + (14 * 30), 150, 20);
         ctnFuncionarios.add(lblCampos1);
         calDataNasc = new JDateChooser();
         calDataNasc.setBounds(160, 30 + (14 * 30), 240, 20);
-        ctnFuncionarios.add(calDataNasc); 
-       
+        ctnFuncionarios.add(calDataNasc);
+
         lblCampos2 = new JLabel("Data de contratação");
         lblCampos2.setBounds(30, 30 + (15 * 30), 150, 20);
         ctnFuncionarios.add(lblCampos2);
         calDataCon = new JDateChooser();
         calDataCon.setBounds(160, 30 + (15 * 30), 240, 20);
         ctnFuncionarios.add(calDataCon);
-       
+
         lblTxtA = new JLabel("Observações:");
         lblTxtA.setBounds(30, 30 + (16 * 30), 150, 20);
         ctnFuncionarios.add(lblTxtA);
@@ -106,7 +105,7 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
         txtAObs.setBounds(160, 30 + (16 * 30), 240, 50);
         txtAObs.setLineWrap(true);
         ctnFuncionarios.add(txtAObs);
-        
+
         btnEditar = new JButton("Editar Dados");
         btnEditar.setEnabled(false);
         btnEditar.addActionListener(this);
@@ -119,7 +118,7 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
         ctnFuncionarios.add(lblFoto);
 
         btnFoto = new JButton("Selecionar imagem");
-        btnFoto.setBounds(430, 215, 150, 20);
+        btnFoto.setBounds(420, 215, 160, 20);
         btnFoto.addActionListener(this);
         ctnFuncionarios.add(btnFoto);
         for (int i = 0; i < strTopo.length; i++) {
@@ -140,7 +139,7 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
                 } catch (Exception erro) {
                     JOptionPane.showMessageDialog(null, erro.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
                 }
-
+                desbloquearCampos(false);
             }
         });
 
@@ -166,12 +165,12 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
         });
         btnNovo = new JButton("Novo Funcionario", icnNovo);
         btnNovo.addActionListener(this);
-        btnNovo.setBounds(430, 265, 150, 30);
+        btnNovo.setBounds(420, 265, 160, 30);
         ctnFuncionarios.add(btnNovo);
 
         btnSalvar = new JButton("Salvar dados", icnSalvar);
         btnSalvar.addActionListener(this);
-        btnSalvar.setBounds(430, 315, 150, 30);
+        btnSalvar.setBounds(420, 315, 160, 30);
         ctnFuncionarios.add(btnSalvar);
 
         icnBloquear = new ImageIcon("img/icons/block.png");
@@ -179,7 +178,7 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
         btnDesativar = new JButton("Desativar", icnBloquear);
         btnDesativar.setEnabled(false);
         btnDesativar.addActionListener(this);
-        btnDesativar.setBounds(430, 365, 150, 30);
+        btnDesativar.setBounds(420, 365, 160, 30);
         ctnFuncionarios.add(btnDesativar);
 
         icnPais = new ImageIcon("img/icons/country.png");
@@ -228,40 +227,34 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
 
                 if (status) {
                     FuncionariosVO tmpFuncionarios = new FuncionariosVO();
-                    SimpleDateFormat f1 = new SimpleDateFormat("dd/MM/yyyy");
-                    SimpleDateFormat f2 = new SimpleDateFormat("yyyy-MM-dd");
-                    txtCampos[0].setText(tmpFuncionarios.getId());
-                    txtCampos[1].setText(tmpFuncionarios.getSobrenome());
-                    txtCampos[2].setText(tmpFuncionarios.getNome());
-                    txtCampos[3].setText(tmpFuncionarios.getCargo());
-                    txtCampos[4].setText(tmpFuncionarios.getTratamento());
-                    txtCampos[5].setText(tmpFuncionarios.getSubordinado());
-                    txtCampos[6].setText(tmpFuncionarios.getEndereco());
-                    txtCampos[7].setText(tmpFuncionarios.getCidade());
-                    txtCampos[8].setText(tmpFuncionarios.getEstado());
-                    txtCampos[9].setText(tmpFuncionarios.getCep());
-                    txtCampos[10].setText(tmpFuncionarios.getPais());
-                    txtCampos[11].setText(tmpFuncionarios.getTelefone());
-                    txtCampos[12].setText(tmpFuncionarios.getExtensao());
-                    txtCampos[13].setText(Float.toString(tmpFuncionarios.getSalario()));
-                    try {
-                        calDataNasc.getDateEditor().setDate(f2.parse(tmpFuncionarios.getDataNasc()));
-                    } catch (ParseException erro) {
-                        JOptionPane.showMessageDialog(null, erro.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);;
-                    }
-                    try {
-                        calDataCon.getDateEditor().setDate(f2.parse(tmpFuncionarios.getDataNasc()));
-                    } catch (ParseException erro) {
-                        JOptionPane.showMessageDialog(null, erro.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);;
-                    }
+                    java.util.Date dn = calDataNasc.getDate();
+                    java.sql.Date sqldn = new java.sql.Date(dn.getTime());
 
+                    java.util.Date dc = calDataCon.getDate();
+                    java.sql.Date sqldc = new java.sql.Date(dc.getTime());
+
+                    tmpFuncionarios.setId(txtCampos[0].getText());
+                    tmpFuncionarios.setSobrenome(txtCampos[1].getText());
+                    tmpFuncionarios.setNome(txtCampos[2].getText());
+                    tmpFuncionarios.setCargo(txtCampos[3].getText());
+                    tmpFuncionarios.setTratamento(txtCampos[4].getText());
+                    tmpFuncionarios.setSubordinado(txtCampos[5].getText());
+                    tmpFuncionarios.setEndereco(txtCampos[6].getText());
+                    tmpFuncionarios.setCidade(txtCampos[7].getText());
+                    tmpFuncionarios.setEstado(txtCampos[8].getText());
+                    tmpFuncionarios.setCep(txtCampos[9].getText());
+                    tmpFuncionarios.setPais(txtCampos[10].getText());
+                    tmpFuncionarios.setTelefone(txtCampos[11].getText());
+                    tmpFuncionarios.setExtensao(txtCampos[12].getText());
+                    tmpFuncionarios.setSalario(Float.parseFloat(txtCampos[13].getText()));
+                    tmpFuncionarios.setDataNasc(sqldn);
+                    tmpFuncionarios.setDataCon(sqldc);
+                    tmpFuncionarios.setObservacao(txtAObs.getText());
                     try {
                         FuncionariosDAO.cadastrarFuncionarios(tmpFuncionarios);
                     } catch (Exception erro) {
                         JOptionPane.showMessageDialog(null, erro.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
                     }
-                    txtAObs.setText(tmpFuncionarios.getObservacao());
-
                     carregarFuncionarios(1, "");
 
                     JOptionPane.showMessageDialog(null, "Funcionário " + tmpFuncionarios.getNome() + " cadastrado!");
@@ -271,7 +264,40 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
                 }
 
             } else if (acao == 2) { //EDITANDO
+                FuncionariosVO tmpFuncionarios = new FuncionariosVO();
+                java.util.Date dn = calDataNasc.getDate();
+                java.sql.Date sqldn = new java.sql.Date(dn.getTime());
 
+                java.util.Date dc = calDataCon.getDate();
+                java.sql.Date sqldc = new java.sql.Date(dc.getTime());
+
+                tmpFuncionarios.setId(txtCampos[0].getText());
+                tmpFuncionarios.setSobrenome(txtCampos[1].getText());
+                tmpFuncionarios.setNome(txtCampos[2].getText());
+                tmpFuncionarios.setCargo(txtCampos[3].getText());
+                tmpFuncionarios.setTratamento(txtCampos[4].getText());
+                tmpFuncionarios.setSubordinado(txtCampos[5].getText());
+                tmpFuncionarios.setEndereco(txtCampos[6].getText());
+                tmpFuncionarios.setCidade(txtCampos[7].getText());
+                tmpFuncionarios.setEstado(txtCampos[8].getText());
+                tmpFuncionarios.setCep(txtCampos[9].getText());
+                tmpFuncionarios.setPais(txtCampos[10].getText());
+                tmpFuncionarios.setTelefone(txtCampos[11].getText());
+                tmpFuncionarios.setExtensao(txtCampos[12].getText());
+                tmpFuncionarios.setSalario(Float.parseFloat(txtCampos[13].getText()));
+                tmpFuncionarios.setDataNasc(sqldn);
+                tmpFuncionarios.setDataCon(sqldc);
+                tmpFuncionarios.setObservacao(txtAObs.getText());
+                try {
+                    FuncionariosDAO.atualizarFuncionario(tmpFuncionarios);
+                } catch (Exception erro) {
+                    JOptionPane.showMessageDialog(null, erro.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+                }
+                carregarFuncionarios(1, "");
+
+                JOptionPane.showMessageDialog(null, "Funcionário " + tmpFuncionarios.getNome() + " atualizado!");
+
+                desbloquearCampos(false);
             }
         } else if (evt.getSource() == btnFoto) {
             JFileChooser flcFoto = new JFileChooser("C:\\Users\\280104398\\Documents");
@@ -284,7 +310,7 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
             strNomeArquivoOrigem = flcFoto.getSelectedFile().getName();
             lblFoto.setIcon(new ImageIcon(strCaminhoOrigem));
         } else if (evt.getSource() == btnDesativar) {
-
+            desbloquearCampos(false);
         } else if (evt.getSource() == btnCidade) {
             String tmpBusca = JOptionPane.showInputDialog("Entre com o nome da cidade:");
             carregarFuncionarios(4, tmpBusca);
@@ -314,6 +340,9 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
         for (int i = 0; i < txtCampos.length; i++) {
             txtCampos[i].setText(null);
         }
+        calDataNasc.getDateEditor().setDate(null);
+        calDataCon.getDateEditor().setDate(null);
+        txtAObs.setText(null);
         lblFoto.setIcon(new ImageIcon("img/user.png"));
     }
 
@@ -358,8 +387,7 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
     public static void carregarCampos(FuncionariosVO tmpFuncionarios) {
 
         try {
-            SimpleDateFormat f1 = new SimpleDateFormat("dd/MM/yyyy");
-            SimpleDateFormat f2 = new SimpleDateFormat("yyyy-MM-dd");
+
             txtCampos[0].setText(tmpFuncionarios.getId());
             txtCampos[1].setText(tmpFuncionarios.getSobrenome());
             txtCampos[2].setText(tmpFuncionarios.getNome());
@@ -374,9 +402,11 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
             txtCampos[11].setText(tmpFuncionarios.getTelefone());
             txtCampos[12].setText(tmpFuncionarios.getExtensao());
             txtCampos[13].setText(Float.toString(tmpFuncionarios.getSalario()));
-            calDataNasc.getDateEditor().setDate(f2.parse(tmpFuncionarios.getDataNasc()));
-            calDataCon.getDateEditor().setDate(f2.parse(tmpFuncionarios.getDataCon()));
             txtAObs.setText(tmpFuncionarios.getObservacao());
+            calDataNasc.getDateEditor().setDate((tmpFuncionarios.getDataNasc()));
+            calDataCon.getDateEditor().setDate((tmpFuncionarios.getDataCon()));
+
+            btnEditar.setEnabled(true);
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, erro.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
         }

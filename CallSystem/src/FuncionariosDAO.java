@@ -49,8 +49,8 @@ public class FuncionariosDAO {
                 tmpFuncionarios.setNome(rsFuncionarios.getString("FirstName"));
                 tmpFuncionarios.setCargo(rsFuncionarios.getString("Title"));
                 tmpFuncionarios.setTratamento(rsFuncionarios.getString("TitleOfCourtesy"));
-                tmpFuncionarios.setDataNasc(rsFuncionarios.getString("BirthDate"));
-                tmpFuncionarios.setDataCon(rsFuncionarios.getString("HireDate"));
+                tmpFuncionarios.setDataNasc(rsFuncionarios.getDate("BirthDate"));
+                tmpFuncionarios.setDataCon(rsFuncionarios.getDate("HireDate"));
                 tmpFuncionarios.setEndereco(rsFuncionarios.getString("Address"));
                 tmpFuncionarios.setCidade(rsFuncionarios.getString("City"));
                 tmpFuncionarios.setEstado(rsFuncionarios.getString("Region"));
@@ -102,8 +102,8 @@ public class FuncionariosDAO {
                 tmpFuncionarios.setNome(rsFuncionarios.getString("FirstName"));
                 tmpFuncionarios.setCargo(rsFuncionarios.getString("Title"));
                 tmpFuncionarios.setTratamento(rsFuncionarios.getString("TitleOfCourtesy"));
-                tmpFuncionarios.setDataNasc(rsFuncionarios.getString("BirthDate"));
-                tmpFuncionarios.setDataCon(rsFuncionarios.getString("HireDate"));
+                tmpFuncionarios.setDataNasc(rsFuncionarios.getDate("BirthDate"));
+                tmpFuncionarios.setDataCon(rsFuncionarios.getDate("HireDate"));
                 tmpFuncionarios.setEndereco(rsFuncionarios.getString("Address"));
                 tmpFuncionarios.setCidade(rsFuncionarios.getString("City"));
                 tmpFuncionarios.setEstado(rsFuncionarios.getString("Region"));
@@ -145,7 +145,7 @@ public class FuncionariosDAO {
             
             sqlCadFun = "INSERT INTO `northwind`.`employees` (`EmployeeID`, `LastName`, `FirstName`, `Title`, `TitleOfCourtesy`, `BirthDate`, `HireDate`, `Address`, `City`, `Region`, `PostalCode`, `Country`, "
                     + "`HomePhone`, `Extension`,`Photo`, `Notes`, `ReportsTo`, "
-                    + "`PhotoPath`, `Salary`) VALUES ";
+                    + "`PhotoPath`, `Salary`) VALUES(";
             sqlCadFun += "'" + tmpFuncionarios.getId() + "',";
             sqlCadFun += "'" + tmpFuncionarios.getSobrenome()+ "',";
             sqlCadFun += "'" + tmpFuncionarios.getNome()+ "',";
@@ -185,4 +185,54 @@ public class FuncionariosDAO {
             throw new Exception(erro.getMessage());
         }
     }
+    
+    public static void atualizarFuncionario(FuncionariosVO tmpFuncionarios) throws Exception{
+        try {//1
+            ConexaoDAO.abreConexao();
+        } catch (Exception erro) {
+            throw new Exception(erro.getMessage());
+        }
+        
+        try {
+            String sqlAttFun;
+            
+            sqlAttFun = "UPDATE `northwind`.`employees` SET ";
+            sqlAttFun += "`LastName` =" + "'" + tmpFuncionarios.getSobrenome()+ "',";   
+            sqlAttFun += "`FirstName` =" + "'" + tmpFuncionarios.getNome()+ "',";
+            sqlAttFun += "`Title` =" + "'" + tmpFuncionarios.getCargo()+ "',";
+            sqlAttFun += "`TitleOfCourtesy` =" + "'" + tmpFuncionarios.getTratamento() + "',";
+            sqlAttFun += "`BirthDate` =" + "'" + tmpFuncionarios.getDataNasc()+ "',";
+            sqlAttFun += "`HireDate` =" + "'" + tmpFuncionarios.getDataCon()+ "',";
+            sqlAttFun += "`Address` =" + "'" + tmpFuncionarios.getEndereco()+ "',";
+            sqlAttFun += "`City` =" + "'" + tmpFuncionarios.getCidade()+ "',";
+            sqlAttFun += "`Region` =" + "'" + tmpFuncionarios.getEstado()+ "',";
+            sqlAttFun += "`PostalCode` =" + "'" + tmpFuncionarios.getCep()+ "',";
+            sqlAttFun += "`Country` =" + "'" + tmpFuncionarios.getPais()+ "',";
+            sqlAttFun += "`HomePhone` =" + "'" + tmpFuncionarios.getTelefone()+ "',";
+            sqlAttFun += "`Extension` =" + "'" + tmpFuncionarios.getExtensao()+ "',";
+            sqlAttFun += "`Notes` =" + "'" + tmpFuncionarios.getObservacao()+ "',";
+            sqlAttFun += "`ReportsTo` =" + "'" + tmpFuncionarios.getSubordinado() + "',";
+            sqlAttFun += "`Salary` =" + "'" + tmpFuncionarios.getSalario() + "'" ;
+            sqlAttFun += "WHERE `employees`.`EmployeeID` =" + tmpFuncionarios.getId() + ";";
+            
+            
+            stFuncionarios = ConexaoDAO.connSistema.createStatement();
+            stFuncionarios.executeUpdate(sqlAttFun); //executeUpdate - executa instruções que nao retornam valor
+            
+            
+        } catch (Exception erro) {
+            msgErro = "Falha na atualização de dados  do Funcionario.\n";
+            msgErro += "Verifique a sintaxe da instrução SQL, nome de campos e tabelas.\n\n";
+            msgErro += "Erro Original: " + erro.getMessage();
+
+            throw new Exception(msgErro); 
+        }
+        
+         try {//36
+            ConexaoDAO.fechaConexao();
+        } catch (Exception erro) {
+            throw new Exception(erro.getMessage());
+        }
+    }
+    
 }
