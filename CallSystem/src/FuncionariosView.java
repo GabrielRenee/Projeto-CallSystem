@@ -137,7 +137,7 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
         for (int i = 0; i < strTopoVenda.length; i++) {
             mdlFuncionariosVenda.addColumn(strTopoVenda[i]);
         }
-        scrFuncionariosVenda.setBounds(600, 265, 550, 245);
+        scrFuncionariosVenda.setBounds(600, 265, 725, 245);
         ctnFuncionarios.add(scrFuncionariosVenda);
         
         
@@ -159,11 +159,11 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
         });
 
         lblTotal = new JLabel("Total Vendas:");
-        lblTotal.setBounds(960, 520, 100, 20);
+        lblTotal.setBounds(1140, 520, 100, 20);
         ctnFuncionarios.add(lblTotal);
         
         txtTotal = new JTextField();
-        txtTotal.setBounds(1050, 520, 100, 20);
+        txtTotal.setBounds(1225, 520, 100, 20);
         ctnFuncionarios.add(txtTotal);
         
         lblBusca = new JLabel("Busca Rápida:");
@@ -354,6 +354,7 @@ public class FuncionariosView extends JInternalFrame implements ActionListener {
         for (int i = 0; i < txtCampos.length; i++) {
             txtCampos[i].setEditable(tmpStatus);
         }
+        txtTotal.setEditable(tmpStatus);
         txtAObs.setEditable(tmpStatus);
         calDataCon.setEnabled(tmpStatus);
         calDataNasc.setEnabled(tmpStatus);
